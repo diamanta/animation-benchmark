@@ -7,27 +7,52 @@ import { Component, ElementRef, HostListener, Renderer2, ViewChild, ViewEncapsul
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent {
-  private elementCount = 100;
-
+  private elementCount = 10;
   @ViewChild('container') private container: ElementRef<HTMLDivElement> | undefined;
 
   constructor(private renderer: Renderer2, private elementRef: ElementRef<HTMLElement>) {
-    this.elementRef.nativeElement.style.display = 'flex';
-    this.elementRef.nativeElement.style.flexWrap = 'wrap';
   }
 
+  private get elements(): HTMLCollection {
+    return this.container?.nativeElement.children || new HTMLCollection();
+  }
 
   @HostListener('document:keydown', ['$event'])
-  onKeyDown(event: KeyboardEvent){
-    switch (event.keyCode) {
-      case 49:
-        this.elementRef.nativeElement.innerHTML = '';
-        for (let i = 0; i< this.elementCount; i++) {
-          const div = document.createElement('div');
-          div.classList.add('box');
-          this.elementRef.nativeElement.appendChild(div);
-        }
-        break;
+  onKeyDown(event: KeyboardEvent) {
+    if (this.container) {
+      switch (event.keyCode) {
+        case 49:
+          this.container.nativeElement.innerHTML = '';
+          for (let i = 0; i < this.elementCount; i++) {
+            const div = document.createElement('div');
+            div.classList.add('box');
+            this.renderer.appendChild(this.container?.nativeElement, div);
+          }
+          break;
+        case 50:
+          for (let i = 0; i < this.elements.length; i++) {
+            this.elements.item(i)?.animate([
+              {
+                transform: 'translateX(0)',
+                offset: 0
+              }, {
+                transform: 'translateX(500px)',
+                offset: 0.5
+              }, {
+                transform: 'translateX(0)',
+                offset: 1
+              }
+            ], {
+              duration: 10000,
+              iterations: Infinity
+            })
+          }
+          break;
+        case 51:
+          break;
+        default:
+          break;
+      }
     }
   }
 }
