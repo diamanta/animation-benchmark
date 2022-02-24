@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, HostBinding, HostListener, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 
 declare const tizen: any;
 
@@ -13,6 +13,13 @@ export class AppComponent {
   private animationClass = 'horizontal-scroll';
   private elementCount = 10;
   @ViewChild('container') private container: ElementRef<HTMLDivElement> | undefined;
+  @HostBinding('style') style = {
+    display: 'block',
+    width: '1920px',
+    height: '1080px',
+    backgroundColor: 'white',
+    color: 'black',
+  }
 
   constructor(private renderer: Renderer2) {
     this.registerTizenKeys();
@@ -37,7 +44,7 @@ export class AppComponent {
   }
 
   private registerTizenKeys() {
-    if (tizen) {
+    if ((window as any).tizen) {
       const mediaKeyCodes = [10252, 412, 417, 415, 19, 413, 427, 428, 457];
       const supportedKeys = tizen.tvinputdevice.getSupportedKeys();
 

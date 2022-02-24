@@ -1,8 +1,4 @@
-:host {
-  background-color: white;
-  color: black;
-
-  #container {
+ #container {
     display: flex;
     flex-wrap: wrap;
 
@@ -21,8 +17,6 @@
       animation-timing-function: linear;
     }
   }
-}
-
 
 @keyframes horizontal-scroll {
   0% {
