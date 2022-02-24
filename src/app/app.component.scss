@@ -1,22 +1,28 @@
-#container {
-  display: flex;
-  flex-wrap: wrap;
+:host {
+  background-color: white;
+  color: black;
 
-  .box {
+  #container {
     display: flex;
-    width: 100px;
-    height: 200px;
-    background-color: red;
-    margin: 1px;
-  }
+    flex-wrap: wrap;
 
-  &.horizontal-scroll {
-    animation-name: horizontal-scroll;
-    animation-duration: 10s;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
+    .box {
+      display: flex;
+      width: 100px;
+      height: 200px;
+      background-color: red;
+      margin: 1px;
+    }
+
+    &.horizontal-scroll {
+      animation-name: horizontal-scroll;
+      animation-duration: 10s;
+      animation-iteration-count: infinite;
+      animation-timing-function: linear;
+    }
   }
 }
+
 
 @keyframes horizontal-scroll {
   0% {
