@@ -7,11 +7,12 @@ import { Component, ElementRef, HostListener, Renderer2, ViewChild, ViewEncapsul
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent {
+  private animation: Animation | undefined;
+  private animationClass = 'horizontal-scroll';
   private elementCount = 10;
   @ViewChild('container') private container: ElementRef<HTMLDivElement> | undefined;
 
-  constructor(private renderer: Renderer2) {
-  }
+  constructor(private renderer: Renderer2) {}
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent) {
@@ -32,6 +33,8 @@ export class AppComponent {
   }
 
   private initElements(container: HTMLElement): void {
+    this.animation?.cancel();
+    this.renderer.removeClass(container, this.animationClass)
     container.innerHTML = '';
     for (let i = 0; i < this.elementCount; i++) {
       const div = document.createElement('div');
@@ -42,12 +45,12 @@ export class AppComponent {
 
   private startKeyFrameAnimation(element: HTMLElement): void {
     this.initElements(element);
-    this.renderer.addClass(element, 'horizontal-scroll');
+    this.renderer.addClass(element, this.animationClass);
   }
 
   private startElementAnimateAnimation(element: HTMLElement) {
     this.initElements(element);
-    element.animate([
+    this.animation = element.animate([
       {
         transform: 'translateX(0)',
         offset: 0
