@@ -1,0 +1,16 @@
+{
+  "icon": "icon.png",
+  "main": "index.html",
+  "bgImage": "icon.png",
+  "title": "KION",
+  "type": "web",
+  "resolution": "1920x1080",
+  "version": "1.0.0",
+  "splashBackground": "icon.png",
+  "bgColor": "#001424",
+  "vendor": "",
+  "largeIcon": "icon.png",
+  "iconColor": "#AD0647",
+  "id": "com.kion.animation-benchmark",
+  "disableBackHistoryAPI": true
+}
