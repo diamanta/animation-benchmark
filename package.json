@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "postbuild": "npx gh-pages -d dist"
+    "postbuild": "node scripts/replace.js && npx gh-pages -d dist"
   },
   "private": true,
   "dependencies": {
@@ -35,6 +35,7 @@
     "karma-coverage": "~2.1.0",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
+    "replace-in-file": "^6.3.2",
     "typescript": "~4.5.2"
   }
 }

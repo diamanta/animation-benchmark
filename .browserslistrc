@@ -7,5 +7,5 @@
 
 firefox 53-74
 chrome 27-80
-not IE 9-11 # For IE 9-11 support, remove 'not'.
+IE 9-11
 safari 2-9.1
