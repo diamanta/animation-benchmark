@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, HostBinding, HostListener, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
