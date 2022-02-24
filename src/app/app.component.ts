@@ -1,5 +1,7 @@
 import { Component, ElementRef, HostListener, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 
+declare const tizen: any;
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -12,7 +14,9 @@ export class AppComponent {
   private elementCount = 10;
   @ViewChild('container') private container: ElementRef<HTMLDivElement> | undefined;
 
-  constructor(private renderer: Renderer2) {}
+  constructor(private renderer: Renderer2) {
+    this.registerTizenKeys();
+  }
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent) {
@@ -29,6 +33,19 @@ export class AppComponent {
         default:
           break;
       }
+    }
+  }
+
+  private registerTizenKeys() {
+    if (tizen) {
+      const mediaKeyCodes = [10252, 412, 417, 415, 19, 413, 427, 428, 457];
+      const supportedKeys = tizen.tvinputdevice.getSupportedKeys();
+
+      supportedKeys.forEach((key: {code: number, name: string}) => {
+        if ((+key.code >= 48 && +key.code <= 57) || mediaKeyCodes.indexOf(+key.code) > -1) {
+          tizen.tvinputdevice.registerKey(key.name);
+        }
+      });
     }
   }
 
