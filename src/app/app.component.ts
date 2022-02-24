@@ -16,14 +16,13 @@ export class AppComponent implements AfterViewInit {
     backgroundColor: 'white',
     color: 'black'
   }
-
+  isWebGL = false;
   private animation: Animation | undefined;
   private animationClass = 'horizontal-scroll';
   private elementCount = 10;
   private frame = 0;
   private startTime = Date.now();
   @ViewChild('container') private container: ElementRef<HTMLDivElement> | undefined;
-
 
   constructor(private renderer: Renderer2) {
   }
@@ -70,12 +69,20 @@ export class AppComponent implements AfterViewInit {
     })
   }
 
+  startWebGLAnimation(): void {
+    if (this.container) {
+      this.container.nativeElement.innerHTML = '';
+    }
+    this.isWebGL = true;
+  }
+
   ngAfterViewInit(): void {
     this.tick();
   }
 
   private initElements(container: HTMLElement): void {
     this.animation?.cancel();
+    this.isWebGL = false;
     this.renderer.removeClass(container, this.animationClass)
     container.innerHTML = '';
     for (let i = 0; i < this.elementCount; i++) {
