@@ -40,3 +40,8 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+/launchers/tizen/.sign/.manifest.tmp
+/launchers/tizen/.tproject
+/launchers/tizen/AnimationBenchmark.wgt
+/launchers/tizen/.sign/author-signature.xml
+/launchers/tizen/.sign/signature1.xml
