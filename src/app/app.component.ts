@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostBinding, HostListener, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostBinding, HostListener, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -6,7 +6,8 @@ import { Component, ElementRef, HostBinding, HostListener, Renderer2, ViewChild,
   styleUrls: ['./app.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
+  fps = '0';
   @HostBinding('style') style = {
     display: 'block',
     width: '1920px',
@@ -14,10 +15,14 @@ export class AppComponent {
     backgroundColor: 'white',
     color: 'black'
   }
+
   private animation: Animation | undefined;
   private animationClass = 'horizontal-scroll';
   private elementCount = 10;
+  private frame = 0;
+  private startTime = Date.now();
   @ViewChild('container') private container: ElementRef<HTMLDivElement> | undefined;
+
 
   constructor(private renderer: Renderer2) {
   }
@@ -64,6 +69,10 @@ export class AppComponent {
     })
   }
 
+  ngAfterViewInit(): void {
+    this.tick();
+  }
+
   private initElements(container: HTMLElement): void {
     this.animation?.cancel();
     this.renderer.removeClass(container, this.animationClass)
@@ -73,5 +82,16 @@ export class AppComponent {
       div.classList.add('box');
       this.renderer.appendChild(this.container?.nativeElement, div);
     }
+  }
+
+  private tick() {
+    const time = Date.now();
+    this.frame++;
+    if (time - this.startTime > 1000) {
+      this.fps = (this.frame / ((time - this.startTime) / 1000)).toFixed(1);
+      this.startTime = time;
+      this.frame = 0;
+    }
+    window.requestAnimationFrame(this.tick.bind(this));
   }
 }

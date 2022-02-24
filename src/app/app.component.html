@@ -1,3 +1,7 @@
-<button (click)="startElementAnimateAnimation(container)">Element animate</button>
-<button (click)="startKeyFrameAnimation(container)">Keyframe animation</button>
+<div class="header">
+  <button (click)="startElementAnimateAnimation(container)">Element animate</button>
+  <button (click)="startKeyFrameAnimation(container)">Keyframe animation</button>
+  <span class="fps">{{fps}}</span>
+</div>
+
 <div #container id="container"></div>
