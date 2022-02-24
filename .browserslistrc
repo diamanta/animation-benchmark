@@ -2,15 +2,19 @@
 # For additional information regarding the format and rule options, please see:
 # https://github.com/browserslist/browserslist#queries
 
-# For the full list of supported browsers by the Angular framework, please see:
-# https://angular.io/guide/browser-support
-
 # You can see what browsers were selected by your queries by running:
 #   npx browserslist
 
-last 1 Chrome version
-last 1 Firefox version
-last 2 Edge major versions
-last 2 Safari major versions
-last 2 iOS major versions
-Firefox ESR
+[webos]
+  chrome 38-68
+  safari 2
+
+[tizen]
+  chrome 38-69
+  safari 2
+
+[browser]
+  firefox 53-74
+  chrome 27-80
+  not IE 9-11 # For IE 9-11 support, remove 'not'.
+  safari 2-9.1
