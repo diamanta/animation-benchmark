@@ -1,9 +1,11 @@
 <div class="header">
-  <button (click)="startElementAnimateAnimation(container)">Element animate</button>
-  <button (click)="startKeyFrameAnimation(container)">Keyframe animation</button>
+  <button (click)="startElementAnimateAnimation(row)">Element animate</button>
+  <button (click)="startKeyFrameAnimation(row)">Keyframe animation</button>
   <button (click)="startWebGLAnimation()">WebGL animation</button>
   <span class="fps">{{fps}}</span>
 </div>
+<div #row id="row">
+  <div class="row-container"></div>
+</div>
 
-<div #container id="container"></div>
 <app-three *ngIf="isWebGL"></app-three>

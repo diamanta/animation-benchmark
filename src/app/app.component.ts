@@ -8,7 +8,7 @@ import { AfterViewInit, Component, ElementRef, HostBinding, HostListener, Render
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements AfterViewInit {
-  fps = '0';
+  fps = '00.0';
   @HostBinding('style') style = {
     display: 'block',
     width: '1920px',
@@ -22,22 +22,23 @@ export class AppComponent implements AfterViewInit {
   private elementCount = 10;
   private frame = 0;
   private startTime = Date.now();
-  @ViewChild('container') private container: ElementRef<HTMLDivElement> | undefined;
+  @ViewChild('row') private row: ElementRef<HTMLDivElement> | undefined;
 
-  constructor(private renderer: Renderer2) {
+  constructor(private renderer: Renderer2, private elementRef: ElementRef<HTMLElement>) {
   }
 
   @HostListener('document:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent) {
-    if (this.container) {
+    if (this.row) {
       switch (event.keyCode) {
         case 49:
-          this.startElementAnimateAnimation(this.container.nativeElement);
+          this.startElementAnimateAnimation(this.row.nativeElement);
           break;
         case 50:
-          this.startKeyFrameAnimation(this.container.nativeElement);
+          this.startKeyFrameAnimation(this.row.nativeElement);
           break;
         case 51:
+          this.startWebGLAnimation();
           break;
         default:
           break;
@@ -47,12 +48,12 @@ export class AppComponent implements AfterViewInit {
 
   startKeyFrameAnimation(element: HTMLElement): void {
     this.initElements(element);
-    this.renderer.addClass(element, this.animationClass);
+    this.renderer.addClass(element.firstElementChild, this.animationClass);
   }
 
   startElementAnimateAnimation(element: HTMLElement) {
     this.initElements(element);
-    this.animation = element.animate([
+    this.animation = element.firstElementChild?.animate([
       {
         transform: 'translateX(0)',
         offset: 0
@@ -70,8 +71,8 @@ export class AppComponent implements AfterViewInit {
   }
 
   startWebGLAnimation(): void {
-    if (this.container) {
-      this.container.nativeElement.innerHTML = '';
+    if (this.row) {
+      this.row.nativeElement.innerHTML = '';
     }
     this.isWebGL = true;
   }
@@ -83,23 +84,27 @@ export class AppComponent implements AfterViewInit {
   private initElements(container: HTMLElement): void {
     this.animation?.cancel();
     this.isWebGL = false;
-    this.renderer.removeClass(container, this.animationClass)
-    container.innerHTML = '';
+    this.renderer.removeClass(container.firstElementChild, this.animationClass)
+    if (container.firstElementChild) {
+      container.firstElementChild.innerHTML = '';
+    }
     for (let i = 0; i < this.elementCount; i++) {
       const div = document.createElement('div');
       div.classList.add('box');
-      this.renderer.appendChild(this.container?.nativeElement, div);
+      this.renderer.appendChild(container.firstElementChild, div);
     }
-  }
 
+    this.renderer.appendChild(this.elementRef.nativeElement, container.cloneNode(true))
+  }
   private tick() {
     const time = Date.now();
     this.frame++;
     if (time - this.startTime > 1000) {
-      this.fps = (this.frame / ((time - this.startTime) / 1000)).toFixed(1);
+      this.fps = (this.frame / ((time - this.startTime) / 1000)).toFixed(1).padStart(4, '0');
       this.startTime = time;
       this.frame = 0;
     }
     window.requestAnimationFrame(this.tick.bind(this));
   }
+
 }
