@@ -1,7 +1,5 @@
 import { Component, ElementRef, HostBinding, HostListener, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
 
-declare const tizen: any;
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -9,20 +7,19 @@ declare const tizen: any;
   encapsulation: ViewEncapsulation.None
 })
 export class AppComponent {
-  private animation: Animation | undefined;
-  private animationClass = 'horizontal-scroll';
-  private elementCount = 10;
-  @ViewChild('container') private container: ElementRef<HTMLDivElement> | undefined;
   @HostBinding('style') style = {
     display: 'block',
     width: '1920px',
     height: '1080px',
     backgroundColor: 'white',
-    color: 'black',
+    color: 'black'
   }
+  private animation: Animation | undefined;
+  private animationClass = 'horizontal-scroll';
+  private elementCount = 10;
+  @ViewChild('container') private container: ElementRef<HTMLDivElement> | undefined;
 
   constructor(private renderer: Renderer2) {
-    this.registerTizenKeys();
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -43,36 +40,12 @@ export class AppComponent {
     }
   }
 
-  private registerTizenKeys() {
-    if ((window as any).tizen) {
-      const mediaKeyCodes = [10252, 412, 417, 415, 19, 413, 427, 428, 457];
-      const supportedKeys = tizen.tvinputdevice.getSupportedKeys();
-
-      supportedKeys.forEach((key: {code: number, name: string}) => {
-        if ((+key.code >= 48 && +key.code <= 57) || mediaKeyCodes.indexOf(+key.code) > -1) {
-          tizen.tvinputdevice.registerKey(key.name);
-        }
-      });
-    }
-  }
-
-  private initElements(container: HTMLElement): void {
-    this.animation?.cancel();
-    this.renderer.removeClass(container, this.animationClass)
-    container.innerHTML = '';
-    for (let i = 0; i < this.elementCount; i++) {
-      const div = document.createElement('div');
-      div.classList.add('box');
-      this.renderer.appendChild(this.container?.nativeElement, div);
-    }
-  }
-
-  private startKeyFrameAnimation(element: HTMLElement): void {
+  startKeyFrameAnimation(element: HTMLElement): void {
     this.initElements(element);
     this.renderer.addClass(element, this.animationClass);
   }
 
-  private startElementAnimateAnimation(element: HTMLElement) {
+  startElementAnimateAnimation(element: HTMLElement) {
     this.initElements(element);
     this.animation = element.animate([
       {
@@ -89,5 +62,16 @@ export class AppComponent {
       duration: 10000,
       iterations: Infinity
     })
+  }
+
+  private initElements(container: HTMLElement): void {
+    this.animation?.cancel();
+    this.renderer.removeClass(container, this.animationClass)
+    container.innerHTML = '';
+    for (let i = 0; i < this.elementCount; i++) {
+      const div = document.createElement('div');
+      div.classList.add('box');
+      this.renderer.appendChild(this.container?.nativeElement, div);
+    }
   }
 }
