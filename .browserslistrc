@@ -5,7 +5,7 @@
 # You can see what browsers were selected by your queries by running:
 #   npx browserslist
 
-  firefox 53-74
-  chrome 27-80
-  not IE 9-11 # For IE 9-11 support, remove 'not'.
-  safari 2-9.1
+firefox 53-74
+chrome 27-80
+not IE 9-11 # For IE 9-11 support, remove 'not'.
+safari 2-9.1
